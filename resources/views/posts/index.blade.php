@@ -8,8 +8,7 @@
     <a href="{{ route('posts.create') }}">Создать новый пост</a>
     <ul>
         @foreach ($posts as $post)
-            <h1><li>{{ $post->title }}</li></h1>
-            <p>{{ $post->content }}</p>
+            <h2><a href="{{ route('posts.show', $post->slug) }}">{{ $post->title }}<br>{{ $post->intro }}</a></h2>
         @endforeach
     </ul>
 </body>

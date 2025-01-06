@@ -14,7 +14,9 @@ return new class extends Migration
         Schema::create('posts', function (Blueprint $table) {
             $table->id();
             $table->string('title');
+            $table->text('intro');
             $table->text('content');
+            $table->string('slug')->unique();
             $table->timestamps();
         });
     }
@@ -27,3 +29,4 @@ return new class extends Migration
         Schema::dropIfExists('posts');
     }
 };
+?>

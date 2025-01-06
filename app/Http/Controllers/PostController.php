@@ -21,9 +21,31 @@ class PostController extends Controller
     {
         $request->validate([
             'title' => 'required',
-            'content' => 'required',
+            'intro' => 'required',
+            'content' => 'required'
         ]);
-        Post::create($request->all());
-        return redirect()->route('posts.index');
+        Post::create($request->only(['title', 'intro', 'content']));
+        return redirect()->route('posts.index')->with('success', 'Пост успешно опубликован!');;
+    }
+    public function show($slug)
+    {
+        $post = Post::where('slug', $slug)->firstOrFail();
+        return view('posts.show', compact('post'));
+    }
+    public function update(Request $request, Post $post)
+    {
+        $request->validate([
+            'title' => 'required',
+            'intro' => 'required',
+            'content' => 'required'
+        ]);
+        $post->update($request->only(['title', 'intro', 'content']));
+        return redirect()->route('posts.index')->with('success', 'Пост успешно обновлён!');
+    }
+    public function destroy(Post $post)
+    {
+        $post->delete();
+        return redirect()->route('posts.index')->with('success', 'Пост успешно удалён!');
     }
 }
+?>
