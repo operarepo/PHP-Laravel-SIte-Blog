@@ -32,14 +32,21 @@ class PostController extends Controller
         $post = Post::where('slug', $slug)->firstOrFail();
         return view('posts.show', compact('post'));
     }
+    public function edit(Request $request, Post $post)
+    {
+        // $post = Post::where('slug', $post)->firstOrFail();
+        return view('posts.edit', compact('post'));
+    }
     public function update(Request $request, Post $post)
     {
         $request->validate([
-            'title' => 'required',
-            'intro' => 'required',
-            'content' => 'required'
+            'title' => 'required|string|max:255',
+            'content' => 'required|string',
+            'intro' => 'required|string|max:255',
         ]);
-        $post->update($request->only(['title', 'intro', 'content']));
+        $post->update($request->only(['title', 'content', 'intro']));
+        $post->slug = \Illuminate\Support\Str::slug($post->title);
+        $post->save();
         return redirect()->route('posts.index')->with('success', 'Пост успешно обновлён!');
     }
     public function destroy(Post $post)
